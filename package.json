@@ -1,0 +1,30 @@
+{
+    "name": "xticket-api",
+    "version": "1.0.0",
+    "description": "Back-end for xTicket App",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "initDatabase": "node scripts/initDatabase.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/SparkSquad/xTicket-api.git"
+    },
+    "author": "SparkSquad",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/SparkSquad/xTicket-api/issues"
+    },
+    "homepage": "https://github.com/SparkSquad/xTicket-api#readme",
+    "dependencies": {
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2",
+        "jsonwebtoken": "^9.0.0",
+        "mariadb": "^3.2.2",
+        "morgan": "^1.10.0",
+        "sequelize": "^6.31.1",
+        "signale": "^1.4.0"
+    }
+}
