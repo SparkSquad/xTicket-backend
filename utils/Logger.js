@@ -52,7 +52,6 @@ class Logger extends Signale {
                 }
             },
         });
-        this.debug(`Logger initialized with log level "${logLevel}"`);
     }
 }
 
