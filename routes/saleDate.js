@@ -9,13 +9,11 @@ router.get('/getAll/:eventId', async (req, res) => {
 
     if (saleDates.length == 0) {
         return res.status(200).json({
-            message: 'No sale dates found',
             saleDates
         });
     }
 
     return res.status(200).json({
-        message: 'search successful',
         saleDates
     });
 });

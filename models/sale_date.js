@@ -31,11 +31,18 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        start_time: {
+            type: DataTypes.TIME,
+            allowNull: false
+        },
+        end_time: {
+            type: DataTypes.TIME,
+            allowNull: false
+        },
         event_id: {
             type: DataTypes.INTEGER,
             allowNull: false
         }
-
     }
 
     const options = {
