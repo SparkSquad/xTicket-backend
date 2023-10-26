@@ -63,5 +63,32 @@ module.exports = (sequelize) => {
         }
     });
 
+    Reflect.defineProperty(model, 'postSaleDate', {
+        value: async function(saleDate) {
+            return await this.create(saleDate);
+        }
+    });
+
+    Reflect.defineProperty(model, 'deleteSaleDate', {
+        value: async function(saleDateId) {
+            return await this.destroy({
+                where: {
+                    sale_date_id: saleDateId
+                }
+            });
+        }
+    });
+
+    Reflect.defineProperty(model, 'SaleDate', {
+        value: async function(saleDateId, saleDate) {
+            return await this.update(saleDate, {
+                where: {
+                    sale_date_id: saleDateId
+                }
+            });
+        }
+    });
+
+
     return model;
 }
