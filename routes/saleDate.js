@@ -1,22 +1,22 @@
 const { Router } = require('express');
-const { sale_dates } = require('../models');
+const { saleDates } = require('../models');
 
 const router = Router();
 
 router.get('/getAll/:eventId', async (req, res) => {
     const { eventId } = req.params;
     try {
-        const saleDates = await sale_dates.getByEventId(eventId);
-        if (saleDates.length == 0) {
+        const saleDate = await saleDates.getByEventId(eventId);
+        if (saleDate.length == 0) {
             return res.status(200).json({
                 message: 'No sale dates found',
-                saleDates
+                saleDate
             });
         }
 
         return res.status(200).json({
             message: 'Sale dates found',
-            saleDates
+            saleDate
         });
     } catch(error) {
         console.log(error);
@@ -27,19 +27,19 @@ router.get('/getAll/:eventId', async (req, res) => {
 });
 
 router.post('/addSaleDate', async (req, res) => {
-    const saleDate = {
+    const dateSale = {
         adults,
-        end_time,
-        event_id,
-        max_tickets,
+        endTime,
+        eventId,
+        maxTickets,
         price,
-        sale_date,
-        start_time,
+        saleDate,
+        startTime,
         tickets
     }  = req.body
 
     try {
-        const newSaleDate = await sale_dates.create(saleDate);
+        const newSaleDate = await saleDates.create(dateSale);
 
         return res.status(200).json({
             message: 'Sale date created',
@@ -55,7 +55,7 @@ router.post('/addSaleDate', async (req, res) => {
 router.delete('/deleteSaleDate/:saleDateId', async (req, res) => {
     const { saleDateId } = req.params;
     try {
-        const deletedSaleDate = await sale_dates.deleteSaleDate(saleDateId);
+        const deletedSaleDate = await saleDates.deleteSaleDate(saleDateId);
         return res.status(200).json({
             message: 'Sale date deleted'
         });
@@ -69,19 +69,19 @@ router.delete('/deleteSaleDate/:saleDateId', async (req, res) => {
 
 router.put('/putSaleDate/:saleDateId', async (req, res) => {
     const { saleDateId } = req.params;
-    const saleDate = {
+    const dateSale = {
         adults,
-        end_time,
-        event_id,
-        max_tickets,
+        endTime,
+        eventId,
+        maxTickets,
         price,
-        sale_date,
-        start_time,
+        saleDate,
+        startTime,
         tickets
     }  = req.body
 
     try {
-        const updatedSaleDate = await sale_dates.SaleDate(saleDateId, saleDate);
+        const updatedSaleDate = await saleDates.SaleDate(saleDateId, dateSale);
         return res.status(200).json({
             message: 'Sale date updated'
         });

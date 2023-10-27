@@ -3,7 +3,7 @@ const { events, artists, sequelize } = require("../models");
 
 const router = Router();
 
-router.post("/create", async (req, res) => {
+router.post("/addEvent", async (req, res) => {
     const { name, genre, description, location, userId, bandsAndArtists } = req.body;
     const t = await sequelize.transaction();
 
@@ -64,6 +64,36 @@ router.get("/getAll/:userId", async (req, res) => {
         
         return res.status(500).json({
             message: "Unable to get events",
+        });
+    }
+});
+
+router.get("/getAll", async (req, res) => {
+    try {
+        const allEvents = await events.findAll();
+        return res.status(200).json(allEvents);
+
+    } catch(error) {
+        console.error("Unable to get events: " + error);
+        return res.status(500).json({
+            message: "Unable to get events",
+        });
+    }
+});
+
+router.get("/getGenres", async (req, res) => {
+    try {
+        const genres = await events.getGenres();
+
+        return res.status(200).json({
+            message: "Genres found",
+            genres,
+        });
+    } catch(error) {
+        console.error("Unable to get genres: " + error);
+
+        return res.status(500).json({
+            message: "Unable to get genres",
         });
     }
 });

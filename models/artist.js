@@ -24,6 +24,7 @@ module.exports = (sequelize) => {
     };
 
     let model = sequelize.define('artist', fields, options);
+    model.belongsTo(sequelize.models.event, { foreignKey: 'eventId' });
 
     Reflect.defineProperty(model, 'addArtist', {
         value: async function(name, eventId, t) {

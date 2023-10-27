@@ -1,5 +1,23 @@
 const { DataTypes, Model } = require('sequelize');
 
+let genres = [
+    "Rock",
+    "Pop",
+    "Hip-Hop/Rap",
+    "Música Electrónica",
+    "Pop/Rock Latino",
+    "Música Country",
+    "R&B/Soul",
+    "Reggae",
+    "Metal",
+    "Jazz",
+    "Blues",
+    "Folk",
+    "Indie",
+    "Clásica",
+    "Reguetón"
+];
+
 module.exports = (sequelize) => {
     const fields = {
         eventId: {
@@ -12,22 +30,7 @@ module.exports = (sequelize) => {
             allowNull: false,
         },
         genre: {
-            type: DataTypes.ENUM(
-                "Rock",
-                "Pop",
-                "Hip-Hop/Rap",
-                "Música Electrónica",
-                "Pop/Rock Latino",
-                "Música Country",
-                "R&B/Soul",
-                "Reggae",
-                "Metal",
-                "Jazz",
-                "Blues",
-                "Folk",
-                "Indie",
-                "Clásica",
-                "Reguetón"
+            type: DataTypes.ENUM(...genres
             ),
             allowNull: false,
         },
@@ -72,6 +75,12 @@ module.exports = (sequelize) => {
                     userId
                 }
             });
+        }
+    });
+
+    Reflect.defineProperty(model, 'getGenres', {
+        value: async function() {
+            return genres;
         }
     });
 
