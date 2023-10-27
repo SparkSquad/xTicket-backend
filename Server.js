@@ -25,6 +25,7 @@ class Server {
     #initRoutes() {
         this.#setRouteHandler("/auth", "./routes/auth.js");
         this.#setRouteHandler("/saleDate", "./routes/saleDate.js");
+        this.#setRouteHandler("/event", "./routes/event.js");
     }
 
     start() {
