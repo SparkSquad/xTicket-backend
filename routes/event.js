@@ -68,4 +68,21 @@ router.get("/getAll/:userId", async (req, res) => {
     }
 });
 
+router.get("/getGenres", async (req, res) => {
+    try {
+        const genres = await events.getGenres();
+
+        return res.status(200).json({
+            message: "Genres found",
+            genres,
+        });
+    } catch(error) {
+        console.error("Unable to get genres: " + error);
+
+        return res.status(500).json({
+            message: "Unable to get genres",
+        });
+    }
+});
+
 module.exports = router;

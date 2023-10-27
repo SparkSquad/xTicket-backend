@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const { sequelize, users } = require('../models');
+const { sequelize, users, events, saleDates } = require('../models');
 const Logger = require('../utils/Logger');
 const { calculateSHA256Hash } = require('../utils/crypto.js')
 
@@ -12,7 +12,7 @@ const initDatabase = async () => {
         logger.success('Connection has been established successfully.');
         await sequelize.sync({ force: true });
         logger.info('Database synchronized successfully.');
-    } 
+    }
     catch (error) {
         logger.fatal('Unable to connect to the database:', error);
     }
@@ -27,6 +27,26 @@ const initUserInitialData = async () => {
             password: await calculateSHA256Hash("Admin1234."),
             type: "admin"
         });
+
+        await events.create({
+            name: "Festival de música",
+            genre: "Rock",
+            description: "Festival de música de rock",
+            location: "Madrid",
+            userId: 1
+        });
+
+        await saleDates.create({
+            saleDate: "2021-06-01",
+            price: 100,
+            tickets: 100,
+            maxTickets: 100,
+            adults: 100,
+            startTime: "18:00:00",
+            endTime: "22:00:00",
+            eventId: 1
+        });
+
         logger.info('Admin user created successfully.');
     }
     catch (error) {

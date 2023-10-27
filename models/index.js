@@ -11,13 +11,14 @@ let sequelize = new Sequelize(database.name, database.user, database.password, {
 });
 
 const users = require('./user')(sequelize);
-const sale_dates = require('./sale_date')(sequelize);
 const events = require('./event')(sequelize);
 const artists = require('./artist')(sequelize);
+const saleDates = require('./saleDate')(sequelize);
 
 module.exports = { 
     sequelize,
-    sale_dates,
+    users,
     events,
+    saleDates,
     artists
 };

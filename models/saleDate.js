@@ -2,17 +2,13 @@ const { DataTypes, Model } = require('sequelize');
 
 module.exports = (sequelize) => {
     const fields = {
-        sale_date_id: {
+        saleDateId: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-        sale_date : {
+        saleDate : {
             type: DataTypes.DATE,
-            allowNull: false
-        },
-        price: {
-            type: DataTypes.INTEGER,
             allowNull: false
         },
         price: {
@@ -23,7 +19,7 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        max_tickets: {
+        maxTickets: {
             type: DataTypes.INTEGER,
             allowNull: false
         },
@@ -31,15 +27,15 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        start_time: {
+        startTime: {
             type: DataTypes.TIME,
             allowNull: false
         },
-        end_time: {
+        endTime: {
             type: DataTypes.TIME,
             allowNull: false
         },
-        event_id: {
+        eventId: {
             type: DataTypes.INTEGER,
             allowNull: false
         }
@@ -51,13 +47,14 @@ module.exports = (sequelize) => {
         updatedAt: false,
     };
 
-    let model = sequelize.define('sale_date', fields, options);
+    let model = sequelize.define('saleDate', fields, options);
+    model.belongsTo(sequelize.models.event, { foreignKey: 'eventId' });
 
     Reflect.defineProperty(model, 'getByEventId', {
         value: async function(eventId) {
             return await this.findAll({
                 where: {
-                    event_id: eventId
+                    eventId: eventId
                 }
             });
         }
@@ -73,7 +70,7 @@ module.exports = (sequelize) => {
         value: async function(saleDateId) {
             return await this.destroy({
                 where: {
-                    sale_date_id: saleDateId
+                    saleDateId: saleDateId
                 }
             });
         }
@@ -83,7 +80,7 @@ module.exports = (sequelize) => {
         value: async function(saleDateId, saleDate) {
             return await this.update(saleDate, {
                 where: {
-                    sale_date_id: saleDateId
+                    saleDateId: saleDateId
                 }
             });
         }
