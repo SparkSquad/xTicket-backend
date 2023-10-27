@@ -17,7 +17,8 @@ const artists = require('./artist')(sequelize);
 
 module.exports = { 
     sequelize,
-    sale_dates
+    sale_dates,
     events,
+    users,
     artists
 };
