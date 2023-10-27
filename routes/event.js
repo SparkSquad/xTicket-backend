@@ -3,7 +3,7 @@ const { events, artists, sequelize } = require("../models");
 
 const router = Router();
 
-router.post("/create", async (req, res) => {
+router.post("/addEvent", async (req, res) => {
     const { name, genre, description, location, userId, bandsAndArtists } = req.body;
     const t = await sequelize.transaction();
 
