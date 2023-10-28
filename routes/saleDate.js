@@ -26,7 +26,7 @@ router.get('/getAll/:eventId', async (req, res) => {
     }
 });
 
-router.post('/addSaleDate', async (req, res) => {
+router.post('/create', async (req, res) => {
     const dateSale = {
         adults,
         endTime,
@@ -52,7 +52,7 @@ router.post('/addSaleDate', async (req, res) => {
     }
 });
 
-router.delete('/deleteSaleDate/:saleDateId', async (req, res) => {
+router.delete('/delete/:saleDateId', async (req, res) => {
     const { saleDateId } = req.params;
     try {
         const deletedSaleDate = await saleDates.deleteSaleDate(saleDateId);
@@ -67,7 +67,7 @@ router.delete('/deleteSaleDate/:saleDateId', async (req, res) => {
     }
 });
 
-router.put('/putSaleDate/:saleDateId', async (req, res) => {
+router.put('/update/:saleDateId', async (req, res) => {
     const { saleDateId } = req.params;
     const dateSale = {
         adults,

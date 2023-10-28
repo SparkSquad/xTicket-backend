@@ -14,11 +14,13 @@ const users = require('./user')(sequelize);
 const events = require('./event')(sequelize);
 const artists = require('./artist')(sequelize);
 const saleDates = require('./saleDate')(sequelize);
+const tickets = require('./ticket')(sequelize);
 
 module.exports = { 
     sequelize,
     users,
     events,
     saleDates,
-    artists
+    artists,
+    tickets
 };
