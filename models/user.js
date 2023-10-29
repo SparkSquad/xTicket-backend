@@ -55,6 +55,17 @@ module.exports = (sequelize) => {
             });
         }
     });
-
+    Reflect.defineProperty(model, 'postUser', {
+        value: async function (name, surnames, email, password, type, t) {
+            return await this.create({
+                name,
+                surnames,
+                email,
+                password,
+                type
+            }, { transaction: t });
+            
+        }
+    })
     return model;
 }
