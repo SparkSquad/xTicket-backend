@@ -86,21 +86,15 @@ module.exports = (sequelize) => {
         }
     });
 
-    Reflect.defineProperty(model, 'getTicketsByEventId', {
-        value: async function(saleDateId) {
-            const saleDateRecord = await this.findOne({
+    Reflect.defineProperty(model, 'getById', {
+        value:  async function (saleDateId) {
+            return await this.findOne({
                 where: {
                     saleDateId: saleDateId
                 }
             });
-
-            if (saleDateRecord) {
-                return saleDateRecord.tickets;
-            } else {
-                return null;
-            }
         }
     });
-
+    
     return model;
 }

@@ -1,4 +1,4 @@
-const { DataTypes, Model } = require('sequelize');
+const { DataTypes } = require('sequelize');
 const crypto = require('crypto');
 
 module.exports = (sequelize) => {
@@ -107,6 +107,12 @@ module.exports = (sequelize) => {
                 }
             });
             return !!existingTicket;
+        }
+    });
+
+    Reflect.defineProperty(model, 'getById', {
+        value: async function(ticketId) {
+            return ticket = await this.findByPk(ticketId)
         }
     });
 

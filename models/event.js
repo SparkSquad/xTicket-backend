@@ -84,5 +84,15 @@ module.exports = (sequelize) => {
         }
     });
 
+    Reflect.defineProperty(model, 'getById', {
+        value: async function(eventId) {
+            return await this.findOne({
+                where: {
+                    eventId
+                }
+            });
+        }
+    });
+
     return model;
 };

@@ -78,8 +78,12 @@ router.get('/getByUuid/:uuid', async (req, res) => {
     const { uuid } = req.params;
     try {
         const availableTicket = await tickets.getByUuid(uuid);
+        if (!availableTicket) {
+            return res.status(550).json({
+                availableTicket
+            });
+        }
         return res.status(200).json({
-            message: 'Tickets found',
             availableTicket});
     } catch(error) {
         console.log(error);
