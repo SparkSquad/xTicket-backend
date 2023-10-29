@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const { sequelize, users, events, saleDates } = require('../models');
+const { sequelize, users, events, saleDates, tickets } = require('../models');
 const Logger = require('../utils/Logger');
 const { calculateSHA256Hash } = require('../utils/crypto.js')
 
@@ -45,6 +45,15 @@ const initUserInitialData = async () => {
             startTime: "18:00:00",
             endTime: "22:00:00",
             eventId: 1
+        });
+
+        await tickets.create({
+            uuid: crypto.randomUUID(),
+            purchaseDate : "2021-06-01",
+            totalTickets: 1,
+            price: 100,
+            saleDateId: 1,
+            userId: 1
         });
 
         logger.info('Admin user created successfully.');

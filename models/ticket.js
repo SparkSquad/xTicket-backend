@@ -16,6 +16,10 @@ module.exports = (sequelize) => {
             type: DataTypes.DATE,
             allowNull: false
         },
+        totalTickets: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
         price: {
             type: DataTypes.INTEGER,
             allowNull: false
@@ -40,15 +44,16 @@ module.exports = (sequelize) => {
     model.belongsTo(sequelize.models.saleDate, { foreignKey: 'saleDateId' });
     model.belongsTo(sequelize.models.user, { foreignKey: 'userId' });
 
-    Reflect.defineProperty(model, 'addTicket', {
-        value: async function(purchaseDate, price, saleDateId, userId, t) {
+    Reflect.defineProperty(model, 'createTicket', {
+        value: async function(purchaseDate, totalTickets, price, saleDateId, userId) {
             return await this.create({
                 uuid: crypto.randomUUID(),
                 purchaseDate,
+                totalTickets,
                 price,
                 saleDateId,
                 userId
-            }, { transaction: t });
+            });
         }
     });
 
@@ -81,4 +86,29 @@ module.exports = (sequelize) => {
             });
         }
     });
+
+    Reflect.defineProperty(model, 'countTicketsByEventId', {
+        value: async function(eventId) {
+            const count = await this.count({
+                where: {
+                    saleDateId: eventId
+                }
+            });
+            return count;
+        }
+    });
+
+    Reflect.defineProperty(model, 'hasTicketForUserAndSaleDate', {
+        value: async function(userId, saleDateId) {
+            const existingTicket = await this.findOne({
+                where: {
+                    userId: userId,
+                    saleDateId: saleDateId
+                }
+            });
+            return !!existingTicket;
+        }
+    });
+
+    return model;
 }

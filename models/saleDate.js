@@ -60,9 +60,19 @@ module.exports = (sequelize) => {
         }
     });
 
-    Reflect.defineProperty(model, 'postSaleDate', {
+    Reflect.defineProperty(model, 'createSaleDate', {
         value: async function(saleDate) {
             return await this.create(saleDate);
+        }
+    });
+
+    Reflect.defineProperty(model, 'updateSaleDate', {
+        value: async function(saleDateId, saleDate) {
+            return await this.update(saleDate, {
+                where: {
+                    saleDateId: saleDateId
+                }
+            });
         }
     });
 
@@ -76,16 +86,21 @@ module.exports = (sequelize) => {
         }
     });
 
-    Reflect.defineProperty(model, 'SaleDate', {
-        value: async function(saleDateId, saleDate) {
-            return await this.update(saleDate, {
+    Reflect.defineProperty(model, 'getTicketsByEventId', {
+        value: async function(saleDateId) {
+            const saleDateRecord = await this.findOne({
                 where: {
                     saleDateId: saleDateId
                 }
             });
+
+            if (saleDateRecord) {
+                return saleDateRecord.tickets;
+            } else {
+                return null;
+            }
         }
     });
-
 
     return model;
 }
