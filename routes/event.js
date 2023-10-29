@@ -19,7 +19,7 @@ router.post("/addEvent", async (req, res) => {
 
         for (const artist of bandsAndArtists) {
             await artists.addArtist(
-                artist.name,
+                artist,
                 event.eventId,
                 t
             );
@@ -28,8 +28,7 @@ router.post("/addEvent", async (req, res) => {
         await t.commit();
 
         return res.status(200).json({
-            message: "Event created",
-            eventId: event.eventId,
+            code: event.eventId,
         });
         
     } catch (error) {
@@ -37,7 +36,7 @@ router.post("/addEvent", async (req, res) => {
         await t.rollback();
 
         return res.status(500).json({
-            message: "Unable to create event",
+            code: -1
         });
     }
 });
