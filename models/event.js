@@ -111,44 +111,49 @@ module.exports = (sequelize) => {
                 genre = '';
             }
 
-            let offset = (parseInt(page) - 1) * limit;
-            let results = await this.findAll({
-                subQuery: false,
-                include: [
-                    {model: sequelize.models.artist, as: 'artists'}
-                ],
-                where: {
-                    [Op.or]: [
-                        {
-                            name: {
-                                [Op.like]: `%${query}%`
-                            }
-                        },
-                        {
-                            '$artists.name$': {
-                                [Op.like]: `%${query}%`
-                            }
-                        }
+            try {
+                let offset = (parseInt(page) - 1) * limit;
+                let results = await this.findAll({
+                    subQuery: false,
+                    include: [
+                        {model: sequelize.models.artist, as: 'artists'}
                     ],
-                    genre: {
-                        [Op.like]: `%${genre}%`
-                    }
-                },
-                limit,
-                offset
-            });
-            let totalElems = await this.count({
-                where: {
-                    name: {
-                        [Op.like]: `%${query}%`
+                    where: {
+                        [Op.or]: [
+                            {
+                                name: {
+                                    [Op.like]: `%${query}%`
+                                }
+                            },
+                            {
+                                '$artists.name$': {
+                                    [Op.like]: `%${query}%`
+                                }
+                            }
+                        ],
+                        genre: {
+                            [Op.like]: `%${genre}%`
+                        }
                     },
-                }
-            });
-            return {
-                results,
-                page,
-                totalElems
-            };
+                    limit,
+                    offset
+                });
+                let totalElems = await this.count({
+                    where: {
+                        name: {
+                            [Op.like]: `%${query}%`
+                        },
+                    }
+                });
+                return {
+                    results,
+                    page,
+                    totalElems
+                };
+            }
+            catch(error) {
+                throw new Error('Unable to search events');
+            }
         }
     });
 
