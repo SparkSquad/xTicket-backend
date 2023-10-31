@@ -22,6 +22,7 @@ router.post('/login', async (req, res) => {
         token,
         expires: new Date(Date.now() + tokenExpirationTime).toString(),
         user: {
+            userId: user.userId,
             name: user.name,
             surnames: user.surnames,
             email: user.email,

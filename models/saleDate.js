@@ -67,14 +67,25 @@ module.exports = (sequelize) => {
     });
 
     Reflect.defineProperty(model, 'updateSaleDate', {
-        value: async function(saleDateId, saleDate) {
-            return await this.update(saleDate, {
+        value: async function(saleDateId, upSaleDate) {
+            const result = await this.update({
+                saleDate: upSaleDate.saleDate,
+                price: upSaleDate.price,
+                tickets: upSaleDate.tickets,
+                maxTickets: upSaleDate.maxTickets,
+                adults: upSaleDate.adults,
+                startTime: upSaleDate.startTime,
+                endTime: upSaleDate.endTime,
+                eventId: upSaleDate.eventId
+            }, {
                 where: {
                     saleDateId: saleDateId
                 }
             });
+            return result;
         }
     });
+    
 
     Reflect.defineProperty(model, 'deleteSaleDate', {
         value: async function(saleDateId) {
