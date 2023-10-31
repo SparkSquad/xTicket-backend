@@ -1,4 +1,4 @@
-const { DataTypes, Model } = require('sequelize');
+const { DataTypes, Model, Op } = require('sequelize');
 
 let genres = [
     "Rock",
@@ -91,6 +91,51 @@ module.exports = (sequelize) => {
                     eventId
                 }
             });
+        }
+    });
+
+    Reflect.defineProperty(model, 'search', {
+        value: async function(query, limit, page) {
+            if(isNaN(limit) || isNaN(page)) {
+                throw new Error('Invalid limit or page');
+            }
+            limit = parseInt(limit);
+            query = query || '';
+            let offset = (parseInt(page) - 1) * limit;
+            let results = await this.findAll({
+                subQuery: false,
+                include: [
+                    {model: sequelize.models.artist, as: 'artists'}
+                ],
+                where: {
+                    [Op.or]: [
+                        {
+                            name: {
+                                [Op.like]: `%${query}%`
+                            }
+                        },
+                        {
+                            '$artists.name$': {
+                                [Op.like]: `%${query}%`
+                            }
+                        }
+                    ],
+                },
+                limit,
+                offset
+            });
+            let totalElems = await this.count({
+                where: {
+                    name: {
+                        [Op.like]: `%${query}%`
+                    },
+                }
+            });
+            return {
+                results,
+                page,
+                totalElems
+            };
         }
     });
 
