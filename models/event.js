@@ -30,8 +30,7 @@ module.exports = (sequelize) => {
             allowNull: false,
         },
         genre: {
-            type: DataTypes.ENUM(...genres
-            ),
+            type: DataTypes.ENUM(...genres),
             allowNull: false,
         },
         description: {
@@ -116,7 +115,8 @@ module.exports = (sequelize) => {
                 let results = await this.findAll({
                     subQuery: false,
                     include: [
-                        {model: sequelize.models.artist, as: 'artists'}
+                        {model: sequelize.models.artist, as: 'artists'},
+                        {model: sequelize.models.saleDate, as: 'saleDates'}
                     ],
                     where: {
                         [Op.or]: [
