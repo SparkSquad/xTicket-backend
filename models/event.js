@@ -95,12 +95,22 @@ module.exports = (sequelize) => {
     });
 
     Reflect.defineProperty(model, 'search', {
-        value: async function(query, limit, page) {
+        value: async function(query, genre, limit, page) {
             if(isNaN(limit) || isNaN(page)) {
                 throw new Error('Invalid limit or page');
             }
             limit = parseInt(limit);
             query = query || '';
+
+            if(genre !== '' && genre !== null) {
+                if(genres.indexOf(genre) === -1) {
+                    throw new Error('Invalid genre');
+                }
+            }
+            else {
+                genre = '';
+            }
+
             let offset = (parseInt(page) - 1) * limit;
             let results = await this.findAll({
                 subQuery: false,
@@ -120,6 +130,9 @@ module.exports = (sequelize) => {
                             }
                         }
                     ],
+                    genre: {
+                        [Op.like]: `%${genre}%`
+                    }
                 },
                 limit,
                 offset
