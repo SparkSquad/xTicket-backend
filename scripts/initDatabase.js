@@ -12,7 +12,7 @@ const initDatabase = async () => {
         logger.success('Connection has been established successfully.');
         await sequelize.sync({ force: true });
         logger.info('Database synchronized successfully.');
-    }
+    } 
     catch (error) {
         logger.fatal('Unable to connect to the database:', error);
     }
@@ -25,7 +25,7 @@ const initUserInitialData = async () => {
             surnames: "",
             email: "admin@vadam.xyz",
             password: await calculateSHA256Hash("Admin1234."),
-            type: "admin"
+            type: 1
         });
 
         await events.create({
@@ -45,15 +45,6 @@ const initUserInitialData = async () => {
             startTime: "18:00:00",
             endTime: "22:00:00",
             eventId: 1
-        });
-
-        await tickets.create({
-            uuid: crypto.randomUUID(),
-            purchaseDate : "2021-06-01",
-            totalTickets: 1,
-            price: 100,
-            saleDateId: 1,
-            userId: 1
         });
 
         logger.info('Admin user created successfully.');
