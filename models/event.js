@@ -94,5 +94,11 @@ module.exports = (sequelize) => {
         }
     });
 
+    Reflect.defineProperty(model, 'get', {
+        value: async function() {
+            return await this.findAll();
+        }
+    });
+
     return model;
 };
