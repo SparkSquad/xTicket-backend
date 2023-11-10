@@ -41,9 +41,13 @@ module.exports = (sequelize) => {
         }
     });
 
-    Reflect.defineProperty(model, 'create', {
-        value: async function(report) {
-            return await this.create(report);
+    Reflect.defineProperty(model, 'createReport', {
+        value: async function( description, eventId, userId) {
+            return await this.create({
+                description,
+                eventId,
+                userId
+            });
         }
     });
 
