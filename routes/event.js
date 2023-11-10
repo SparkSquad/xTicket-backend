@@ -136,4 +136,23 @@ router.put("/updateEvent", async (req, res) => {
     }
 });
 
+router.get('/search/:query?', async (req, res) => {
+    const { query } = req.params;
+    let { limit, page, genre } = req.query;
+
+    if(genre === undefined) {
+        genre = null;
+    }
+
+    try {
+        const searchResult = await events.search(query, genre, limit, page);
+        return res.status(200).json(searchResult);
+    }
+    catch(e) {
+        return res.status(400).json({
+            message: e.message
+        });
+    }
+});
+
 module.exports = router;

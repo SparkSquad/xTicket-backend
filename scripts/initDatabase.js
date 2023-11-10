@@ -37,7 +37,7 @@ const initUserInitialData = async () => {
         });
 
         await saleDates.create({
-            saleDate: "2021-06-01",
+            saleDate: "2024-06-01",
             price: 100,
             tickets: 100,
             maxTickets: 100,
