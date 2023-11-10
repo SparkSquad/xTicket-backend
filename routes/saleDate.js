@@ -20,7 +20,6 @@ router.get('/getAll/:eventId', async (req, res) => {
             saleDate
         });
     } catch(error) {
-        console.log(error);
         return res.status(500).json({
             message: 'Error getting sale dates',
         });
@@ -30,7 +29,6 @@ router.get('/getAll/:eventId', async (req, res) => {
 router.post('/create', async (req, res) => {
     const dateSale = { adults, endTime, eventId, maxTickets,
         price, saleDate, startTime, tickets }  = req.body
-        console.log(req.body);
     try {
         const newSaleDate = await saleDates.createSaleDate(dateSale);
 
@@ -38,7 +36,6 @@ router.post('/create', async (req, res) => {
             message: 'Sale date created',
         });
     } catch(error) {
-        console.log(error);
         return res.status(500).json({
             message: 'Error creating sale date',
         });
