@@ -97,4 +97,43 @@ router.get("/getGenres", async (req, res) => {
     }
 });
 
+router.put("/updateEvent", async (req, res) => {
+    const { name, genre, description, location, bandsAndArtists, eventId } = req.body;
+    const t = await sequelize.transaction();
+
+    try {
+        await events.updateEvent(
+            name,
+            genre,
+            description,
+            location,
+            eventId,
+            t
+        );
+
+        await artists.deleteAllArtists(eventId, t);
+
+        for(const artist of bandsAndArtists) {
+            await artists.addArtist(
+                artist,
+                eventId,
+                t
+            )
+        }
+
+        await t.commit();
+
+        return res.status(200).json({
+            message: "Event updated",
+        });
+    } catch(error) {
+        console.error("Unable to update event: " + error);
+        await t.rollback();
+
+        return res.status(500).json({
+            message: "Unable to update event",
+        });
+    }
+});
+
 module.exports = router;

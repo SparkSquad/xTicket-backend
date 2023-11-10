@@ -94,5 +94,20 @@ module.exports = (sequelize) => {
         }
     });
 
+    Reflect.defineProperty(model, 'updateEvent', {
+        value: async function(name, genre, description, location, eventId, t) {
+            return await this.update({
+                name,
+                genre,
+                description,
+                location
+            }, {
+                where: {
+                    eventId
+                }
+            }, { transaction: t });
+        }
+    });
+
     return model;
 };

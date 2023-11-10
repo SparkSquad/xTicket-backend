@@ -35,5 +35,15 @@ module.exports = (sequelize) => {
         }
     });
 
+    Reflect.defineProperty(model, 'deleteAllArtists', {
+        value: async function(eventId, t) {
+            return await this.destroy ({
+                where: {
+                    eventId
+                }
+            }, { transaction: t });
+        }
+    });
+
     return model;
 }
