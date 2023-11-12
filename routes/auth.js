@@ -63,4 +63,33 @@ router.post("/signup", async (req, res) => {
     }
 });
 
+router.put("/update", async (req, res) => {
+    const { userId, name, surnames, email, password } = req.body;
+    const t = await sequelize.transaction();
+
+    try {
+        await users.updateUser(
+            userId,
+            name,
+            surnames,
+            email,
+            await calculateSHA256Hash(password),
+            t
+        );
+
+        await t.commit();
+
+        return res.status(200).json({
+            message: "User updated"
+        });
+    } catch (error) {
+        console.error("Unable to update user: " + error);
+        await t.rollback();
+
+        return res.status(500).json({
+            message: "Unable to update user"
+        });
+    }
+});
+
 module.exports = router;

@@ -67,5 +67,21 @@ module.exports = (sequelize) => {
             
         }
     })
+
+    Reflect.defineProperty(model, 'updateUser', {
+        value: async function (userId, name, surnames, email, password, t) {
+            return await this.update({
+                name,
+                surnames,
+                email,
+                password
+            }, {
+                where: {
+                    userId: userId
+                }
+            }, { transaction: t });
+        }
+    })
+
     return model;
 }
