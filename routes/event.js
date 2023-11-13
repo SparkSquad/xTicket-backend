@@ -155,4 +155,25 @@ router.get('/search/:query?', async (req, res) => {
     }
 });
 
+router.get('/getEvent/:eventId', async (req, res) => {
+    const { eventId } = req.params;
+
+    try {
+        const event = await events.getById(eventId);
+
+        if(event === null) {
+            return res.status(404).json({
+                message: "Event not found"
+            });
+        }
+
+        return res.status(200).json(event);
+    }
+    catch(e) {
+        return res.status(400).json({
+            message: e.message
+        });
+    }
+});
+
 module.exports = router;

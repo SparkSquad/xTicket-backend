@@ -85,11 +85,28 @@ module.exports = (sequelize) => {
 
     Reflect.defineProperty(model, 'getById', {
         value: async function(eventId) {
-            return await this.findOne({
+            const result = await this.findOne({
+                attributes: ['eventId', 'name', 'genre', 'description', 'location', 'userId'],
+                include: [{
+                    model: sequelize.models.artist,
+                    as:'bandsAndArtists'
+                }],
                 where: {
                     eventId
                 }
             });
+
+            const formattedResult = {
+                eventId: result.eventId,
+                name: result.name,
+                genre: result.genre,
+                description: result.description,
+                location: result.location,
+                userId: result.userId,
+                bandsAndArtists: result.bandsAndArtists.map(artist => artist.name)
+            };
+
+            return formattedResult;
         }
     });
 
