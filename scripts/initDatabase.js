@@ -29,6 +29,14 @@ const initUserInitialData = async () => {
             type: "admin"
         });
 
+        await users.create({
+            name: "Liu",
+            surnames: "HS",
+            email: "liu@gmail.com",
+            password: await calculateSHA256Hash("Liu1234."),
+            type: "eventPlanner"
+        });
+
         await events.create({
             name: "Festival de música",
             genre: "Rock",
