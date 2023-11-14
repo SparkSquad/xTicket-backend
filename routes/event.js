@@ -124,14 +124,14 @@ router.put("/updateEvent", async (req, res) => {
         await t.commit();
 
         return res.status(200).json({
-            message: "Event updated",
+            code: 1
         });
     } catch(error) {
         console.error("Unable to update event: " + error);
         await t.rollback();
 
         return res.status(500).json({
-            message: "Unable to update event",
+            code: -1
         });
     }
 });
