@@ -68,26 +68,32 @@ router.put("/update", async (req, res) => {
     const t = await sequelize.transaction();
 
     try {
+        let passwordHash = await calculateSHA256Hash(password);
+
+        if(password == null || password == "") {
+            passwordHash = null;
+        }
+
         await users.updateUser(
             userId,
             name,
             surnames,
             email,
-            await calculateSHA256Hash(password),
+            passwordHash,
             t
         );
 
         await t.commit();
 
         return res.status(200).json({
-            message: "User updated"
+            code: 1
         });
     } catch (error) {
         console.error("Unable to update user: " + error);
         await t.rollback();
 
         return res.status(500).json({
-            message: "Unable to update user"
+            code: -1
         });
     }
 });
