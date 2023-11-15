@@ -23,7 +23,8 @@ module.exports = (sequelize) => {
     };
 
     let model = sequelize.define('artist', fields, options);
-    sequelize.models.event.hasMany(model, { foreignKey: 'eventId' });
+    sequelize.models.event.hasMany(model, { as:'bandsAndArtists', foreignKey: 'eventId' });
+    sequelize.models.event.hasMany(model, { as:'artists', foreignKey: 'eventId' });
     model.belongsTo(sequelize.models.event, { foreignKey: 'eventId' });
 
     Reflect.defineProperty(model, 'addArtist', {

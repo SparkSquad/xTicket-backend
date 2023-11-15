@@ -190,6 +190,7 @@ module.exports = (sequelize) => {
                 };
             }
             catch(error) {
+                console.log(error);
                 throw new Error('Unable to search events');
             }
         }

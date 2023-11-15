@@ -42,7 +42,7 @@ const initUserInitialData = async () => {
             genre: "Rock",
             description: "Festival de música de rock",
             location: "Madrid",
-            userId: 1
+            userId: 2
         });
 
         await saleDates.create({

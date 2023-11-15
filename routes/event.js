@@ -170,6 +170,7 @@ router.get('/getEvent/:eventId', async (req, res) => {
         return res.status(200).json(event);
     }
     catch(e) {
+        console.log(e);
         return res.status(400).json({
             message: e.message
         });
