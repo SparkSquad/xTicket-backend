@@ -67,5 +67,28 @@ module.exports = (sequelize) => {
             
         }
     })
+
+    Reflect.defineProperty(model, 'updateUser', {
+        value: async function (userId, name, surnames, email, passwordHash, t) {
+
+            const userAccount = await this.findOne({
+                where: {
+                    userId: userId
+                }
+            }, { transaction: t });
+
+            userAccount.name = name;
+            userAccount.surnames = surnames;
+            userAccount.email = email;
+            if(passwordHash != null) {
+                userAccount.password = passwordHash;
+            }
+            
+            await userAccount.save({ transaction: t });
+
+            return userAccount;
+        }
+    })
+
     return model;
 }

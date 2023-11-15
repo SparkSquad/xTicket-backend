@@ -49,6 +49,7 @@ module.exports = (sequelize) => {
 
     let model = sequelize.define('saleDate', fields, options);
     model.belongsTo(sequelize.models.event, { foreignKey: 'eventId' });
+    sequelize.models.event.hasMany(model, { foreignKey: 'eventId' });
 
     Reflect.defineProperty(model, 'getByEventId', {
         value: async function(eventId) {

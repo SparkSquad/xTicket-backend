@@ -1,5 +1,8 @@
-const { DataTypes, Model } = require('sequelize');
+const { Sequelize, DataTypes, Model } = require('sequelize');
 
+/**
+ * @param {Sequelize} sequelize 
+ */
 module.exports = (sequelize) => {
     const fields = {
         artistId: {
@@ -10,11 +13,7 @@ module.exports = (sequelize) => {
         name: {
             type: DataTypes.STRING(100),
             allowNull: false
-        },
-        eventId: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
+        }
     };
 
     const options = {
@@ -24,6 +23,8 @@ module.exports = (sequelize) => {
     };
 
     let model = sequelize.define('artist', fields, options);
+    sequelize.models.event.hasMany(model, { as:'bandsAndArtists', foreignKey: 'eventId' });
+    sequelize.models.event.hasMany(model, { as:'artists', foreignKey: 'eventId' });
     model.belongsTo(sequelize.models.event, { foreignKey: 'eventId' });
 
     Reflect.defineProperty(model, 'addArtist', {
@@ -31,6 +32,16 @@ module.exports = (sequelize) => {
             return await this.create({
                 name,
                 eventId
+            }, { transaction: t });
+        }
+    });
+
+    Reflect.defineProperty(model, 'deleteAllArtists', {
+        value: async function(eventId, t) {
+            return await this.destroy ({
+                where: {
+                    eventId
+                }
             }, { transaction: t });
         }
     });
