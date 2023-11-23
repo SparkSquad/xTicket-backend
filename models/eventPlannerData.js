@@ -2,7 +2,7 @@ const { DataTypes, Model } = require('sequelize');
 
 module.exports = (sequelize) => {
     const fields = {
-        userId: {
+        eventPlannerDataId: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
@@ -28,14 +28,18 @@ module.exports = (sequelize) => {
     };
 
     let model = sequelize.define('eventPlannerData', fields, options);
-    model.belongsTo(sequelize.models.event, { foreignKey: 'eventId' });
-    sequelize.models.event.hasMany(model, { foreignKey: 'eventId' });
+    model.belongsTo(sequelize.models.user, { foreignKey: 'userId' });
+    sequelize.models.event.hasOne(model, { foreignKey: 'userId' });
 
-    Reflect.defineProperty(model, 'getByEventId', {
-        value: async function (eventId) {
+    Reflect.defineProperty(model, 'getByUserId', {
+        value: async function (userId) {
             return await this.findOne({
+                include: [{
+                    model: sequelize.models.user,
+                    as:'user'
+                }],
                 where: {
-                    eventId: eventId 
+                    userId 
                 }
             });
         }
