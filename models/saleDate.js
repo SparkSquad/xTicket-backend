@@ -99,8 +99,18 @@ module.exports = (sequelize) => {
     });
 
     Reflect.defineProperty(model, 'getById', {
-        value:  async function (saleDateId) {
+        value:  async function (dateId) {
             return await this.findOne({
+                where: {
+                    saleDateId: dateId
+                }
+            });
+        }
+    });
+
+    Reflect.defineProperty(model, 'getTicketsByEventId', {
+        value:  async function (saleDateId) {
+            return await this.sum('tickets', {
                 where: {
                     saleDateId: saleDateId
                 }

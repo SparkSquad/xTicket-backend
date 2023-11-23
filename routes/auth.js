@@ -45,7 +45,6 @@ router.post("/signup", async (req, res) => {
             type,
             t
         );
-        console.error(user)
 
         await t.commit();
 
@@ -54,7 +53,6 @@ router.post("/signup", async (req, res) => {
         });
         
     } catch (error) {
-        console.error("Unable to create user: " + error);
         await t.rollback();
 
         return res.status(500).json({
@@ -89,7 +87,6 @@ router.put("/update", async (req, res) => {
             code: 1
         });
     } catch (error) {
-        console.error("Unable to update user: " + error);
         await t.rollback();
 
         return res.status(500).json({

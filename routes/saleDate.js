@@ -88,4 +88,26 @@ router.delete('/delete/:saleDateId', async (req, res) => {
     }
 });
 
+router.get('/get/:saleDateId', async (req, res) => {
+    const { saleDateId } = req.params;
+    try {
+        const saleDate = await saleDates.getById(saleDateId);
+
+        if (saleDate == null) {
+            return res.status(404).json({
+                saleDate
+            });
+        }
+
+        return res.status(200).json({
+            saleDate
+        });
+
+    } catch(error) {
+        return res.status(500).json({
+            message: 'Error getting sale date',
+        });
+    }
+});
+
 module.exports = router;
