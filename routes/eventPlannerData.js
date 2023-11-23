@@ -28,3 +28,4 @@ router.get("/:eventPlannerDataId", async (req, res) => {
         });
     }
 });
+module.exports = router;
