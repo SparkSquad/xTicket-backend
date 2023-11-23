@@ -196,5 +196,15 @@ module.exports = (sequelize) => {
         }
     });
 
+    Reflect.defineProperty(model, 'deleteEvent', {
+        value: async function(eventId) {
+            return await this.destroy({
+                where: {
+                    eventId: eventId
+                }
+            });
+        }
+    });
+
     return model;
 };
