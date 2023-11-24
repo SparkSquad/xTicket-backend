@@ -30,6 +30,7 @@ class Server {
         this.#setRouteHandler("/fullTickets", "./routes/fullTickets.js");
         this.#setRouteHandler("/report", "./routes/reports.js");
         this.#setRouteHandler("/eventPlannerData", "./routes/eventPlannerData.js")
+        this.#setRouteHandler("/user", "./routes/user.js")
     }
 
     start() {

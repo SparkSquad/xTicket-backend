@@ -90,5 +90,68 @@ module.exports = (sequelize) => {
         }
     })
 
+    Reflect.defineProperty(model, 'search', {
+        value: async function(query, limit, page) {
+            if(isNaN(limit) || isNaN(page)) {
+                throw new Error('Invalid limit or page');
+            }
+            limit = parseInt(limit);
+            query = query || '';
+
+            try {
+                let offset = (parseInt(page) - 1) * limit;
+                let results = await this.findAll({
+                    subQuery: false,
+                    include: [
+                        {model: sequelize.models.eventPlannerData, as: 'eventPlannerData'}
+                    ],
+                    where: {
+                        [Op.or]: [
+                            {
+                                name: {
+                                    [Op.like]: `%${query}%`
+                                }
+                            },
+                            {
+                                surnames: {
+                                    [Op.like]: `%${query}%`
+                                }
+                            }
+                        ],
+                        type: "eventPlanner"
+                    },
+                    limit,
+                    offset
+                });
+                let totalElems = await this.count({
+                    where: {
+                        [Op.or]: [
+                            {
+                                name: {
+                                    [Op.like]: `%${query}%`
+                                }
+                            },
+                            {
+                                surnames: {
+                                    [Op.like]: `%${query}%`
+                                }
+                            }
+                        ],
+                        type: "eventPlanner"
+                    }
+                });
+                return {
+                    results,
+                    page,
+                    totalElems
+                };
+            }
+            catch(error) {
+                console.log(error);
+                throw new Error('Unable to search event planner');
+            }
+        }
+    });
+
     return model;
 }
