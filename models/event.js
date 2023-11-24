@@ -107,6 +107,9 @@ module.exports = (sequelize) => {
                 location: result.location,
                 userId: result.userId,
                 bandsAndArtists: result.bandsAndArtists.map(artist => artist.name),
+                artists: result.artists,
+                saleDates: result.saleDates,
+                eventPlanner: eventPlanner
             };
 
             return formattedResult;
