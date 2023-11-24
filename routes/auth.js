@@ -2,6 +2,7 @@ const { Router } = require('express');
 const { users, sequelize } = require('../models');
 const { calculateSHA256Hash, generateJsonWebToken } = require('../utils/crypto');
 const { tokenExpirationTime } = require('../config');
+const oneUseCode = require('../models/oneUseCode');
 
 const router = Router();
 
@@ -31,6 +32,39 @@ router.post('/login', async (req, res) => {
     });
 });
 
+router.post('/codeLogin', async (req, res) => {
+    const { code } = req.body;
+    const oneUC = await oneUseCode.findByPk(code);
+
+    if(!oneUC) {
+        return res.status(401).json({
+            message: 'Invalid code'
+        });
+    }
+
+    const user = await users.getById(oneUC.userId);
+
+    if(!user) {
+        return res.status(401).json({
+            message: 'Invalid credentials'
+        });
+    }
+
+    const token = generateJsonWebToken(user.email);
+    
+    return res.status(200).json({
+        message: 'Login successful',
+        token,
+        expires: new Date(Date.now() + tokenExpirationTime).toString(),
+        user: {
+            userId: user.userId,
+            name: user.name,
+            surnames: user.surnames,
+            email: user.email,
+            type: user.type
+        }
+    });
+});
 
 router.post("/signup", async (req, res) => {
     const { name, surnames, email, password, type } = req.body;
