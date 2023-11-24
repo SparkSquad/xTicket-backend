@@ -87,10 +87,11 @@ module.exports = (sequelize) => {
         value: async function(eventId) {
             const result = await this.findOne({
                 attributes: ['eventId', 'name', 'genre', 'description', 'location', 'userId'],
-                include: [{
-                    model: sequelize.models.artist,
-                    as:'bandsAndArtists'
-                }],
+                include: [
+                    { model: sequelize.models.artist, as:'bandsAndArtists' },
+                    { model: sequelize.models.artist, as: 'artists' },
+                    { model: sequelize.models.saleDate, as: 'saleDates' }
+                ],
                 where: {
                     eventId
                 }
