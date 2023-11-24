@@ -97,6 +97,8 @@ module.exports = (sequelize) => {
                 }
             });
 
+            const eventPlanner = sequelize.models.user.findByPk(result.userId)
+
             const formattedResult = {
                 eventId: result.eventId,
                 name: result.name,
@@ -104,7 +106,7 @@ module.exports = (sequelize) => {
                 description: result.description,
                 location: result.location,
                 userId: result.userId,
-                bandsAndArtists: result.bandsAndArtists.map(artist => artist.name)
+                bandsAndArtists: result.bandsAndArtists.map(artist => artist.name),
             };
 
             return formattedResult;
