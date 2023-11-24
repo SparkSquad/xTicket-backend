@@ -187,6 +187,10 @@ module.exports = (sequelize) => {
                     offset
                 });
                 let totalElems = await this.count({
+                    subQuery: false,
+                    include: [
+                        {model: sequelize.models.artist, as: 'artists'}
+                    ],
                     where: {
                         [Op.or]: [
                             {
