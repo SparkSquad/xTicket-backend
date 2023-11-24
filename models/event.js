@@ -97,7 +97,11 @@ module.exports = (sequelize) => {
                 }
             });
 
-            const eventPlanner = sequelize.models.user.findByPk(result.userId)
+            const eventPlanner = sequelize.models.user.findOne({
+                where: {
+                    userId: result.userId
+                }
+            });
 
             const formattedResult = {
                 eventId: result.eventId,
