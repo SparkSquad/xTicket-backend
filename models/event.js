@@ -97,7 +97,7 @@ module.exports = (sequelize) => {
                 }
             });
 
-            const eventPlanner = sequelize.models.user.findOne({
+            const eventPlanner = await sequelize.models.user.findOne({
                 where: {
                     userId: result.userId
                 }
