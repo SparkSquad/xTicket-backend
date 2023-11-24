@@ -188,9 +188,21 @@ module.exports = (sequelize) => {
                 });
                 let totalElems = await this.count({
                     where: {
-                        name: {
-                            [Op.like]: `%${query}%`
-                        },
+                        [Op.or]: [
+                            {
+                                name: {
+                                    [Op.like]: `%${query}%`
+                                }
+                            },
+                            {
+                                '$artists.name$': {
+                                    [Op.like]: `%${query}%`
+                                }
+                            }
+                        ],
+                        genre: {
+                            [Op.like]: `%${genre}%`
+                        }
                     }
                 });
                 return {
