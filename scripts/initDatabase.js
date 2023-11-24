@@ -42,6 +42,7 @@ const initUserInitialData = async () => {
             genre: "Rock",
             description: "Festival de música de rock",
             location: "Madrid",
+            ticketTakerCode: "1234",
             userId: 2
         });
 

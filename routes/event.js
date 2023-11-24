@@ -4,7 +4,7 @@ const { events, artists, sequelize } = require("../models");
 const router = Router();
 
 router.post("/addEvent", async (req, res) => {
-    const { name, genre, description, location, userId, bandsAndArtists } = req.body;
+    const { name, genre, description, location, userId, bandsAndArtists, ticketTakerCode } = req.body;
     const t = await sequelize.transaction();
 
     try {
@@ -14,6 +14,7 @@ router.post("/addEvent", async (req, res) => {
             description,
             location,
             userId,
+            ticketTakerCode,
             t
         );
 
@@ -190,6 +191,24 @@ router.delete('/delete/:eventId', async (req, res) => {
             message: 'Error deleting event',
         });
     }
+});
+
+router.post('/loginTickerTaker', async (req, res) => {
+    const { ticketTakerCode } = req.body;
+    const ticketTaker = await events.getByCode(ticketTakerCode);
+
+    if (!ticketTaker) {
+        return res.status(401).json({
+            message: 'Invalid ticket taker code'
+        });
+    }
+
+    return res.status(200).json({
+        message: 'Ticket taker login successful',
+        ticketTaker: {
+            ticketTakerCode: ticketTaker.ticketTakerCode,
+        }
+    });
 });
 
 module.exports = router;

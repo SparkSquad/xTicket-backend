@@ -45,6 +45,11 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
+
+        ticketTakerCode: {
+            type: DataTypes.STRING(45),
+            allowNull: false,
+        }
     };
 
     const options = {
@@ -56,13 +61,14 @@ module.exports = (sequelize) => {
     let model = sequelize.define('event', fields, options);
 
     Reflect.defineProperty(model, 'createEvent', {
-        value: async function(name, genre, description, location, userId, t) {
+        value: async function(name, genre, description, location, userId, ticketTakerCode, t) {
             return await this.create({
                 name,
                 genre,
                 description,
                 location,
-                userId
+                userId,
+                ticketTakerCode
             }, { transaction: t });
         }
     });
@@ -201,6 +207,15 @@ module.exports = (sequelize) => {
             return await this.destroy({
                 where: {
                     eventId: eventId
+                }
+            });
+        }
+    });
+    Reflect.defineProperty(model, 'getByCode', {
+        value: async function(ticketTakerCode) {
+            return await this.findOne({
+                where: {
+                    ticketTakerCode: ticketTakerCode
                 }
             });
         }
