@@ -76,7 +76,7 @@ module.exports = (sequelize) => {
     })
 
     Reflect.defineProperty(model, 'updateUser', {
-        value: async function (userId, name, surnames, email, passwordHash, t) {
+        value: async function (userId, name, surnames, email, passwordHash, disabled,t) {
 
             const userAccount = await this.findOne({
                 where: {
@@ -87,6 +87,7 @@ module.exports = (sequelize) => {
             userAccount.name = name;
             userAccount.surnames = surnames;
             userAccount.email = email;
+            userAccount.disabled = disabled;
             if(passwordHash != null) {
                 userAccount.password = passwordHash;
             }

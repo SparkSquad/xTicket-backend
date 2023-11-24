@@ -62,7 +62,7 @@ router.post("/signup", async (req, res) => {
 });
 
 router.put("/update", async (req, res) => {
-    const { userId, name, surnames, email, password } = req.body;
+    const { userId, name, surnames, email, password, disabled } = req.body;
     const t = await sequelize.transaction();
 
     try {
@@ -78,6 +78,7 @@ router.put("/update", async (req, res) => {
             surnames,
             email,
             passwordHash,
+            disabled,
             t
         );
 
