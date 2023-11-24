@@ -93,12 +93,19 @@ module.exports = (sequelize) => {
         value: async function(eventId) {
             const result = await this.findOne({
                 attributes: ['eventId', 'name', 'genre', 'description', 'location', 'userId'],
-                include: [{
-                    model: sequelize.models.artist,
-                    as:'bandsAndArtists'
-                }],
+                include: [
+                    { model: sequelize.models.artist, as:'bandsAndArtists' },
+                    { model: sequelize.models.artist, as: 'artists' },
+                    { model: sequelize.models.saleDate, as: 'saleDates' }
+                ],
                 where: {
                     eventId
+                }
+            });
+
+            const eventPlanner = await sequelize.models.user.findOne({
+                where: {
+                    userId: result.userId
                 }
             });
 
@@ -109,7 +116,10 @@ module.exports = (sequelize) => {
                 description: result.description,
                 location: result.location,
                 userId: result.userId,
-                bandsAndArtists: result.bandsAndArtists.map(artist => artist.name)
+                bandsAndArtists: result.bandsAndArtists.map(artist => artist.name),
+                artists: result.artists,
+                saleDates: result.saleDates,
+                eventPlanner: eventPlanner
             };
 
             return formattedResult;
@@ -183,10 +193,26 @@ module.exports = (sequelize) => {
                     offset
                 });
                 let totalElems = await this.count({
+                    subQuery: false,
+                    include: [
+                        {model: sequelize.models.artist, as: 'artists'}
+                    ],
                     where: {
-                        name: {
-                            [Op.like]: `%${query}%`
-                        },
+                        [Op.or]: [
+                            {
+                                name: {
+                                    [Op.like]: `%${query}%`
+                                }
+                            },
+                            {
+                                '$artists.name$': {
+                                    [Op.like]: `%${query}%`
+                                }
+                            }
+                        ],
+                        genre: {
+                            [Op.like]: `%${genre}%`
+                        }
                     }
                 });
                 return {

@@ -16,6 +16,8 @@ const artists = require('./artist')(sequelize);
 const saleDates = require('./saleDate')(sequelize);
 const tickets = require('./ticket')(sequelize);
 const reports = require('./report')(sequelize);
+const eventPlannersData = require('./eventPlannerData')(sequelize);
+const eventFollows = require('./eventFollow')(sequelize);
 
 module.exports = {
     sequelize,
@@ -24,5 +26,7 @@ module.exports = {
     saleDates,
     artists,
     tickets,
-    reports
+    reports,
+    eventPlannersData,
+    eventFollows
 };
