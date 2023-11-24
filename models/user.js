@@ -1,4 +1,6 @@
+const { on } = require('nodemailer/lib/xoauth2');
 const { DataTypes, Model } = require('sequelize');
+
 
 module.exports = (sequelize) => {
     const fields = {
@@ -30,6 +32,11 @@ module.exports = (sequelize) => {
             validate: {
                 len: [64, 64]
             }
+        },
+        disabled: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
         },
     
         type: {
@@ -152,6 +159,8 @@ module.exports = (sequelize) => {
             }
         }
     });
+
+
 
     return model;
 }
