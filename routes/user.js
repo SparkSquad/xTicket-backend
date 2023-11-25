@@ -72,6 +72,6 @@ router.delete('/eventFollow/:userId', async (req, res) => {
             message: e.message
         })
     }
-}
+});
 
 module.exports = router;
