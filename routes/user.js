@@ -23,7 +23,9 @@ router.get('/eventFollows/:userId', async (req, res) => {
 
     try {
         const result = await eventFollows.getFollowedEvent(userId);
-        return res.status(200).json(result);
+        return res.status(200).json({
+            response: result
+        });
     }
     catch(e) {
         return res.status(400).json({
