@@ -1,4 +1,6 @@
+const { on } = require('nodemailer/lib/xoauth2');
 const { DataTypes, Model } = require('sequelize');
+
 
 module.exports = (sequelize) => {
     const fields = {
@@ -30,6 +32,11 @@ module.exports = (sequelize) => {
             validate: {
                 len: [64, 64]
             }
+        },
+        disabled: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
         },
     
         type: {
@@ -69,7 +76,7 @@ module.exports = (sequelize) => {
     })
 
     Reflect.defineProperty(model, 'updateUser', {
-        value: async function (userId, name, surnames, email, passwordHash, t) {
+        value: async function (userId, name, surnames, email, passwordHash, disabled,t) {
 
             const userAccount = await this.findOne({
                 where: {
@@ -80,6 +87,7 @@ module.exports = (sequelize) => {
             userAccount.name = name;
             userAccount.surnames = surnames;
             userAccount.email = email;
+            userAccount.disabled = disabled;
             if(passwordHash != null) {
                 userAccount.password = passwordHash;
             }
@@ -152,6 +160,8 @@ module.exports = (sequelize) => {
             }
         }
     });
+
+
 
     return model;
 }
