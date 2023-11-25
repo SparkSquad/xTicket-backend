@@ -53,4 +53,25 @@ router.post('/eventFollow/:userId', async (req, res) => {
     }
 });
 
+router.delete('/eventFollow/:userId', async (req, res) => {
+    const { userId } = req.params;
+    const { eventId } = req.body;
+
+    try {
+        const result = await eventFollows.destroy({
+            where: {
+                userId,
+                eventId
+            }
+        });
+
+        return res.status(200);
+    }
+    catch(e) {
+        return res.status(400).json({
+            message: e.message
+        })
+    }
+}
+
 module.exports = router;
