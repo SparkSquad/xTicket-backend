@@ -25,7 +25,9 @@ router.get('/eventFollows/:userId', async (req, res) => {
 
     try {
         const result = await eventFollows.getFollowedEvent(userId);
-        return res.status(200).json(result);
+        return res.status(200).json({
+            response: result
+        });
     }
     catch(e) {
         return res.status(400).json({
@@ -42,6 +44,27 @@ router.post('/eventFollow/:userId', async (req, res) => {
         const result = await eventFollows.create({
             userId,
             eventId
+        });
+
+        return res.status(200);
+    }
+    catch(e) {
+        return res.status(400).json({
+            message: e.message
+        })
+    }
+});
+
+router.delete('/eventFollow/:userId', async (req, res) => {
+    const { userId } = req.params;
+    const { eventId } = req.body;
+
+    try {
+        const result = await eventFollows.destroy({
+            where: {
+                userId,
+                eventId
+            }
         });
 
         return res.status(200);
