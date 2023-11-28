@@ -57,6 +57,15 @@ const initUserInitialData = async () => {
             eventId: 1
         });
 
+        await tickets.create({
+            uuid: "1234",
+            purchaseDate: "2024-06-01",
+            totalTickets: 2,
+            price: 200,
+            saleDateId: 1,
+            userId: 1
+        });
+
         logger.info('Admin user created successfully.');
     }
     catch (error) {
