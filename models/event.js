@@ -92,7 +92,7 @@ module.exports = (sequelize) => {
     Reflect.defineProperty(model, 'getById', {
         value: async function(eventId) {
             const result = await this.findOne({
-                attributes: ['eventId', 'name', 'genre', 'description', 'location', 'userId'],
+                attributes: ['eventId', 'name', 'genre', 'description', 'location', 'userId', 'ticketTakerCode'],
                 include: [
                     { model: sequelize.models.artist, as:'bandsAndArtists' },
                     { model: sequelize.models.artist, as: 'artists' },
@@ -116,6 +116,7 @@ module.exports = (sequelize) => {
                 description: result.description,
                 location: result.location,
                 userId: result.userId,
+                ticketTakerCode: result.ticketTakerCode,
                 bandsAndArtists: result.bandsAndArtists.map(artist => artist.name),
                 artists: result.artists,
                 saleDates: result.saleDates,
