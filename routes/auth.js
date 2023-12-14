@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { users, sequelize } = require('../models');
+const { users, sequelize, oneUseCodes } = require('../models');
 const { calculateSHA256Hash, generateJsonWebToken } = require('../utils/crypto');
 const { tokenExpirationTime } = require('../config');
 
@@ -31,6 +31,46 @@ router.post('/login', async (req, res) => {
     });
 });
 
+router.post('/codeLogin', async (req, res) => {
+    const { oneTUCode, email } = req.body;
+    try {
+        const user = await users.getByEmail(email);
+
+        if(!user) {
+            return res.status(401).json({
+                message: 'Invalid credentials'
+            });
+        }
+    
+        const oneUC = await oneUseCodes.validateUserCode(oneTUCode, user.userId);
+    
+        if(!oneUC) {
+            return res.status(401).json({
+                message: 'Invalid code'
+            });
+        }
+    
+        const token = generateJsonWebToken(user.email);
+        
+        return res.status(200).json({
+            message: 'Login successful',
+            token,
+            expires: new Date(Date.now() + tokenExpirationTime).toString(),
+            user: {
+                userId: user.userId,
+                name: user.name,
+                surnames: user.surnames,
+                email: user.email,
+                type: user.type
+            }
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: 'Error'
+        });
+    }
+});
 
 router.post("/signup", async (req, res) => {
     const { name, surnames, email, password, type } = req.body;
@@ -62,7 +102,7 @@ router.post("/signup", async (req, res) => {
 });
 
 router.put("/update", async (req, res) => {
-    const { userId, name, surnames, email, password } = req.body;
+    const { userId, name, surnames, email, password, disabled } = req.body;
     const t = await sequelize.transaction();
 
     try {
@@ -78,6 +118,7 @@ router.put("/update", async (req, res) => {
             surnames,
             email,
             passwordHash,
+            disabled,
             t
         );
 
