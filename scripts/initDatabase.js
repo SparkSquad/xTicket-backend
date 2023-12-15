@@ -30,11 +30,19 @@ const initUserInitialData = async () => {
         });
 
         await users.create({
+            name: "Juan",
+            surnames: "García",
+            email: "juan@gmail.com",
+            password: await calculateSHA256Hash("Juan1234."),
+            type: "2"
+        });
+
+        await users.create({
             name: "Liu",
             surnames: "HS",
             email: "liu@gmail.com",
             password: await calculateSHA256Hash("Liu1234."),
-            type: "eventPlanner"
+            type: "3"
         });
 
         await events.create({
@@ -46,25 +54,55 @@ const initUserInitialData = async () => {
             userId: 2
         });
 
+        await events.create({
+            name: "Concierto familiar",
+            genre: "Jazz",
+            description: "Festival de música de jazz",
+            location: "Mexico",
+            ticketTakerCode: "123456",
+            userId: 2
+        });
+
         await saleDates.create({
             saleDate: "2024-06-01",
             price: 100,
             tickets: 100,
-            maxTickets: 100,
-            adults: 100,
+            maxTickets: 2,
+            adults: 1,
             startTime: "18:00:00",
             endTime: "22:00:00",
             eventId: 1
         });
 
+        await saleDates.create({
+            saleDate: "2024-01-02",
+            price: 1200,
+            tickets: 100,
+            maxTickets: 1,
+            adults: 1,
+            startTime: "10:00:00",
+            endTime: "22:00:00",
+            eventId: 2
+        });
+
         await tickets.create({
             uuid: "1234",
-            purchaseDate: "2024-06-01",
+            purchaseDate: "2024-01-01",
             totalTickets: 2,
             price: 200,
             saleDateId: 1,
             userId: 1
         });
+
+        await tickets.create({
+            uuid: "12345",
+            purchaseDate: "2024-01-01",
+            totalTickets: 1,
+            price: 1200,
+            saleDateId: 2,
+            userId: 3
+        });
+
 
         logger.info('Admin user created successfully.');
     }
