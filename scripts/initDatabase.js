@@ -1,9 +1,9 @@
 require('dotenv').config();
 
 const crypto = require('crypto');
-const { sequelize, users, events, saleDates, tickets } = require('../models');
+const { sequelize, users, events, saleDates, tickets, eventPlannersData} = require('../models');
 const Logger = require('../utils/Logger');
-const { calculateSHA256Hash } = require('../utils/crypto.js')
+const { calculateSHA256Hash } = require('../utils/crypto.js');
 
 const logger = new Logger();
 
@@ -100,6 +100,12 @@ const initUserInitialData = async () => {
             totalTickets: 1,
             price: 1200,
             saleDateId: 2,
+            userId: 3
+        });
+
+        await eventPlannersData.create({
+            email: "correogmail.com",
+            phone: "123456789",
             userId: 3
         });
 
