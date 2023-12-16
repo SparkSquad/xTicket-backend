@@ -34,7 +34,7 @@ const initUserInitialData = async () => {
             surnames: "García",
             email: "juan@gmail.com",
             password: await calculateSHA256Hash("Juan1234."),
-            type: "2"
+            type: 2
         });
 
         await users.create({
@@ -42,7 +42,7 @@ const initUserInitialData = async () => {
             surnames: "HS",
             email: "liu@gmail.com",
             password: await calculateSHA256Hash("Liu1234."),
-            type: "3"
+            type: 3
         });
 
         await events.create({
