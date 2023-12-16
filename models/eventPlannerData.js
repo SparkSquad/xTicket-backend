@@ -35,8 +35,7 @@ module.exports = (sequelize) => {
         value: async function (userId) {
             return await this.findOne({
                 include: [{
-                    model: sequelize.models.user,
-                    attributes: ["name", "surnames"]
+                    model: sequelize.models.user
                 }],
                 where: {
                     userId 

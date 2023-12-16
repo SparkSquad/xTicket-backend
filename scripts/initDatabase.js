@@ -51,7 +51,7 @@ const initUserInitialData = async () => {
             description: "Festival de música de rock",
             location: "Madrid",
             ticketTakerCode: "1234",
-            userId: 2
+            userId: 3
         });
 
         await events.create({
@@ -60,7 +60,7 @@ const initUserInitialData = async () => {
             description: "Festival de música de jazz",
             location: "Mexico",
             ticketTakerCode: "123456",
-            userId: 2
+            userId: 3
         });
 
         await saleDates.create({
@@ -100,7 +100,7 @@ const initUserInitialData = async () => {
             totalTickets: 1,
             price: 1200,
             saleDateId: 2,
-            userId: 3
+            userId: 2
         });
 
         await eventPlannersData.create({
